@@ -70,7 +70,7 @@ class QuestionIndexViewTests(TestCase):
         index page.
         """
         time = timezone.now() + datetime.timedelta(days=-30)
-        question = QuestionFactory(question_text="Past question.", pub_date=time)
+        past_question = QuestionFactory(question_text="Past question.", pub_date=time)
         response = self.client.get(reverse('polls:index'))
         self.assertQuerysetEqual(
             response.context['latest_question_list'],
@@ -83,7 +83,7 @@ class QuestionIndexViewTests(TestCase):
         the index page.
         """
         time = timezone.now() + datetime.timedelta(days=30)
-        question = QuestionFactory(question_text="Future question.", pub_date=time)
+        future_question = QuestionFactory(question_text="Future question.", pub_date=time)
         response = self.client.get(reverse('polls:index'))
         self.assertContains(response, "No polls are available.")
         self.assertQuerysetEqual(response.context['latest_question_list'], [])
@@ -95,8 +95,8 @@ class QuestionIndexViewTests(TestCase):
         """
         time_past = timezone.now() + datetime.timedelta(days=-30)
         time_future = timezone.now() + datetime.timedelta(days=30)
-        question_past = QuestionFactory(question_text="Past question.", pub_date=time_past)
-        question_future = QuestionFactory(question_text="Future question.", pub_date=time_future)
+        past_question = QuestionFactory(question_text="Past question.", pub_date=time_past)
+        future_question = QuestionFactory(question_text="Future question.", pub_date=time_future)
         response = self.client.get(reverse('polls:index'))
         self.assertQuerysetEqual(
             response.context['latest_question_list'],
@@ -109,8 +109,8 @@ class QuestionIndexViewTests(TestCase):
         """
         time_1 = timezone.now() + datetime.timedelta(days=-30)
         time_2 = timezone.now() + datetime.timedelta(days=-5)
-        question_past_1 = QuestionFactory(question_text="Past question 1.", pub_date=time_1)
-        question_past_2 = QuestionFactory(question_text="Past question 2.", pub_date=time_2)
+        past_question_1 = QuestionFactory(question_text="Past question 1.", pub_date=time_1)
+        past_question_2 = QuestionFactory(question_text="Past question 2.", pub_date=time_2)
         response = self.client.get(reverse('polls:index'))
         self.assertQuerysetEqual(
             response.context['latest_question_list'],
@@ -125,8 +125,8 @@ class QuestionDetailViewTests(TestCase):
         returns a 404 not found.
         """
         time = timezone.now() + datetime.timedelta(days=5)
-        question_future = QuestionFactory(question_text="Future question.", pub_date=time)
-        url = reverse('polls:detail', args=(question_future.pk,))
+        future_question = QuestionFactory(question_text="Future question.", pub_date=time)
+        url = reverse('polls:detail', args=(future_question.pk,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
@@ -136,7 +136,7 @@ class QuestionDetailViewTests(TestCase):
         displays the question's text.
         """
         time = timezone.now() + datetime.timedelta(days=-5)
-        question_past = QuestionFactory(question_text="Past question.", pub_date=time)
-        url = reverse('polls:detail', args=(question_past.pk,))
+        past_question = QuestionFactory(question_text="Past question.", pub_date=time)
+        url = reverse('polls:detail', args=(past_question.pk,))
         response = self.client.get(url)
-        self.assertContains(response, question_past.question_text)
+        self.assertContains(response, past_question.question_text)
