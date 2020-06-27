@@ -35,6 +35,8 @@ ALLOWED_HOSTS = ['localhost', '0.0.0.0']
 # Application definition
 
 INSTALLED_APPS = [
+    'polls.apps.PollsConfig',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -137,4 +139,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# AUTH_USER_MODEL = 'polls.User'
+AUTH_USER_MODEL = 'polls.User'
